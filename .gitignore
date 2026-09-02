@@ -1,0 +1,17 @@
+.env
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+node_modules/
+.next/
+*.tsbuildinfo
+coverage/
+.coverage
+htmlcov/
+*.log
