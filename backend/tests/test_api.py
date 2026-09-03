@@ -27,6 +27,7 @@ def test_questions_are_filtered_and_structured_by_affected_part() -> None:
     assert len(questions) == 15
     assert [question["order"] for question in questions] == list(range(1, 16))
     assert all(question["affected_part"] == "leaf" for question in questions)
+    assert all(question["image"] == f"/images/questions/{question['key'].replace('_', '-')}.webp" for question in questions)
     assert set(questions[0]) == {
         "id",
         "key",

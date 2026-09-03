@@ -36,7 +36,7 @@ def question(
             "operator": "equals",
             "value": True,
         },
-        "image": None,
+        "image": f"/images/questions/{key.replace('_', '-')}.webp",
     }
 
 

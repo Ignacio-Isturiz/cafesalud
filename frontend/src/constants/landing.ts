@@ -2,11 +2,7 @@ import { images } from "@/constants/images";
 
 export const navigation = [
   { label: "Inicio", href: "#inicio" },
-  { label: "Características", href: "#caracteristicas" },
   { label: "Cómo funciona", href: "#como-funciona" },
-  { label: "Enfermedades", href: "#enfermedades" },
-  { label: "Sobre el proyecto", href: "#sobre-proyecto" },
-  { label: "Contacto", href: "#contacto" },
 ] as const;
 
 export const diseases = [
@@ -29,4 +25,3 @@ export const diseases = [
     image: images.diseases.americanLeafSpot,
   },
 ] as const;
-
