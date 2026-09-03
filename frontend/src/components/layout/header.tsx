@@ -9,7 +9,7 @@ export function Header() {
     <header className="site-header">
       <div className="shell header-inner">
         <Link href="/" className="brand" aria-label="CaféSalud, inicio">
-          <BrandMark />
+          <BrandMark priority />
           <span className="brand-copy">
             <strong>Café<span>Salud</span></strong>
             <small>Sistema Experto</small>
@@ -33,4 +33,3 @@ export function Header() {
     </header>
   );
 }
-

@@ -39,7 +39,14 @@ export function QuestionCard({ question, answer, current, total, progress, valid
       <article className="question-card">
         {question.image && (
           <div className="question-image">
-            <Image alt="Referencia visual de la pregunta" fill sizes="(max-width: 700px) 100vw, 620px" src={question.image} />
+            <Image
+              alt={`Ejemplo visual para responder: ${question.label}`}
+              fill
+              priority={current === 1}
+              sizes="(max-width: 700px) calc(100vw - 70px), 636px"
+              src={question.image}
+            />
+            <span>Ejemplo visual</span>
           </div>
         )}
         <div className="question-heading">

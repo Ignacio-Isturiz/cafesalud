@@ -1,10 +1,19 @@
-import { Sprout } from "lucide-react";
+import Image from "next/image";
 
-export function BrandMark() {
+interface BrandMarkProps {
+  priority?: boolean;
+}
+
+export function BrandMark({ priority = false }: BrandMarkProps) {
   return (
     <span className="brand-mark" aria-hidden="true">
-      <Sprout size={30} strokeWidth={2.1} />
+      <Image
+        alt=""
+        height={52}
+        priority={priority}
+        src="/images/brand/cafe-salud-logo.png"
+        width={52}
+      />
     </span>
   );
 }
-
