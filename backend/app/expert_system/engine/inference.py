@@ -31,7 +31,7 @@ class InferenceEngine:
             condition
             for evaluation in primary_match.evaluations
             for condition in evaluation.matched
-            if not condition.required
+            if condition.field != "affected_part" and condition.expected is not False
         ]
         unique_conditions = {condition.field: condition for condition in matched_conditions}
         disease = DISEASE_BY_ID.get(primary_match.disease_id) if primary_match else None
@@ -44,9 +44,7 @@ class InferenceEngine:
                 for condition in unique_conditions.values()
             ],
             "explanation": [] if primary_match is None else self.explanations.build(primary_match.evaluations),
-            "recommendations": list(disease.recommendations) if disease else [
-                "Registra los síntomas observados y consulta a un profesional agrónomo."
-            ],
+            "recommendations": list(disease.recommendations) if disease else self._no_match_guidance(facts),
             "disclaimer": "Este resultado corresponde a una orientación diagnóstica preliminar y no reemplaza la evaluación de un profesional agrónomo.",
         }
 
@@ -66,3 +64,32 @@ class InferenceEngine:
             "score": match.score,
             "compatibility": self._compatibility(match.score),
         }
+
+    @staticmethod
+    def _no_match_guidance(facts: dict[str, Any]) -> list[str]:
+        if facts.get("affected_part") == "leaf" and facts.get("leaf_lesions") is False:
+            if facts.get("foliar_decline") is True:
+                return [
+                    "El patrón no coincide con las tres enfermedades foliares evaluadas; analiza otras causas de amarillamiento, marchitez o caída de hojas con un profesional agrónomo.",
+                    "Registra las condiciones del cultivo y la evolución de los síntomas.",
+                ]
+            return [
+                "No se observó un patrón compatible con las enfermedades foliares seleccionadas.",
+                "Continúa vigilando la planta y consulta a un profesional si aparecen nuevos síntomas.",
+            ]
+        if facts.get("affected_part") == "leaf":
+            return [
+                "Las lesiones no coinciden con los patrones de mancha de hierro, roya u ojo de gallo evaluados.",
+                "Documenta los síntomas y consulta a un profesional agrónomo para analizar otras causas foliares.",
+            ]
+        if facts.get("affected_part") == "stem_branch":
+            return [
+                "No se observó un patrón compatible con las afecciones de tallo o rama evaluadas.",
+                "Continúa vigilando la planta y consulta a un profesional si aparecen lesiones o secamiento progresivo.",
+            ]
+        if facts.get("affected_part") == "fruit":
+            return [
+                "No se observó un patrón compatible con las afecciones del fruto evaluadas.",
+                "Continúa vigilando la planta y consulta a un profesional si aparecen lesiones, caída, cambios de color o desarrollo anormal.",
+            ]
+        return ["Registra los síntomas observados y consulta a un profesional agrónomo."]

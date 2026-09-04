@@ -19,6 +19,8 @@ class AnswerNormalizer:
         }
         facts["affected_part"] = self.part_aliases.get(facts.get("affected_part"), facts.get("affected_part"))
         self._derive_leaf_facts(facts)
+        self._derive_stem_facts(facts)
+        self._derive_fruit_facts(facts)
         return facts
 
     def _normalize_value(self, value: Any) -> Any:
@@ -54,5 +56,38 @@ class AnswerNormalizer:
             facts["target_like_lesions"] = shape == "target_like" or facts.get("eye_spot_compatible") is True
         if "dark_margin" not in facts:
             facts["dark_margin"] = self._contains(borders, "dark")
+        if "iron_spot_compatible" not in facts:
+            facts["iron_spot_compatible"] = (
+                facts["circular_brown_lesions"]
+                and facts["light_center"]
+                and facts["yellow_halo"]
+            )
+        if "eye_spot_compatible" not in facts:
+            facts["eye_spot_compatible"] = (
+                facts["target_like_lesions"]
+                and facts["light_center"]
+                and facts["dark_margin"]
+            )
         if facts.get("recent_rains") is True:
             facts["humid_conditions"] = True
+
+    @staticmethod
+    def _derive_stem_facts(facts: dict[str, Any]) -> None:
+        if "stem_path_active" not in facts:
+            facts["stem_path_active"] = (
+                facts.get("stem_lesions") is True
+                or facts.get("stem_progressive_drying") is True
+            )
+
+    @staticmethod
+    def _derive_fruit_facts(facts: dict[str, Any]) -> None:
+        if "fruit_abnormal_change" not in facts:
+            facts["fruit_abnormal_change"] = any(
+                facts.get(key) is True
+                for key in ("premature_fruit_drop", "fruit_color_change", "abnormal_fruit_development")
+            )
+        if "fruit_path_active" not in facts:
+            facts["fruit_path_active"] = (
+                facts.get("fruit_lesions") is True
+                or facts.get("fruit_abnormal_change") is True
+            )

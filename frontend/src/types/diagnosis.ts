@@ -8,11 +8,18 @@ export interface QuestionOption {
   description?: string | null;
 }
 
-export interface ConditionalLogic {
+export interface ConditionalPredicate {
   question_key: string;
   operator: "equals" | "not_equals" | "contains";
   value: boolean | string;
 }
+
+export interface ConditionalGroup {
+  all?: ConditionalPredicate[];
+  any?: ConditionalPredicate[];
+}
+
+export type ConditionalLogic = ConditionalPredicate | ConditionalGroup;
 
 export interface DiagnosisQuestion {
   id: string;

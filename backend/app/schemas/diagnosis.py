@@ -34,10 +34,15 @@ class QuestionOption(BaseModel):
     description: str | None = None
 
 
-class ConditionalLogic(BaseModel):
+class ConditionalPredicate(BaseModel):
     question_key: str
     operator: Literal["equals", "not_equals", "contains"]
     value: str | bool
+
+
+class ConditionalGroup(BaseModel):
+    all: list[ConditionalPredicate] | None = None
+    any: list[ConditionalPredicate] | None = None
 
 
 class QuestionRead(BaseModel):
@@ -50,5 +55,5 @@ class QuestionRead(BaseModel):
     required: bool
     order: int
     affected_part: Literal["leaf", "stem", "fruit"]
-    conditional_logic: ConditionalLogic | None = None
+    conditional_logic: ConditionalPredicate | ConditionalGroup | None = None
     image: str | None = None
